@@ -8,13 +8,19 @@ namespace Slutuppgift
 {
     class FiaGame
     {
+        private ConsoleColor[] _defaultColors = new ConsoleColor[4]
+            {
+                ConsoleColor.Red,
+                ConsoleColor.Blue,
+                ConsoleColor.Green,
+                ConsoleColor.Yellow
+            };
         public Player[] Players { get; set; }
 
         public Board Board { get; set; }
 
-        public FiaGame(int boardLeftCornerX = 0, int boardLeftCornerY = 0, int numberOfPlayers = 4)
+        public FiaGame()
         {
-            Players = CreatePlayers(numberOfPlayers);
         }
 
         public void StartGame()
@@ -29,7 +35,6 @@ namespace Slutuppgift
             bool endLoop = false;
 
             Console.WriteLine("==  Welcome to Fia!  ==");
-
 
             do
             {
@@ -57,12 +62,109 @@ namespace Slutuppgift
 
         public void Setup()
         {
+            SetupBoard();
+            SetupPlayers();
+        }
 
+        public void SetupBoard()
+        {
+            Board = new Board();
+            Board.DrawBoard();
+        }
+
+        public void SetupPlayers()
+        {
+            int numOfPlayers;
+            do
+            {
+                Console.WriteLine("Please select number of players (2-4)");
+                numOfPlayers = InputHelper.ReadNumber();
+
+                if (numOfPlayers > 1 && numOfPlayers < 5)
+                {
+                    break;
+                }
+            } while (true);
+
+            Players = new Player[numOfPlayers];
+
+            for (int i = 0; i < numOfPlayers; i++)
+            {
+                Players[i] = new Player(_defaultColors[i], i + 1);
+            }
         }
 
         public void RunGame()
         {
+            int dieRoll;
+            bool[] movablePieces;
+            int pieceToMove;
+            bool winner = false;
 
+            Console.WriteLine("Game starting!");
+            
+            while (!winner)
+            {
+                foreach(Player player in Players)
+                {
+                    for (int i = 0; i < player.Pieces.Length; i++)
+                    {
+                        Console.WriteLine("Piece {0} progress: {1}", i + 1, player.Pieces[i].Progress);
+                    }
+                    Console.WriteLine("Player {0} rolls...", player.PlayerNumber);
+                    dieRoll = Die.Roll();
+                    Console.WriteLine("Player {0} gets a {1}", player.PlayerNumber, dieRoll);
+
+                    movablePieces = player.GetMovablePieces(dieRoll);
+
+                    if(movablePieces.Contains(true))
+                    {
+                        while (true)
+                        {
+                            Console.WriteLine("You can move one of the following pieces:");
+
+                            for (int i = 0; i < movablePieces.Length; i++)
+                            {
+                                if (movablePieces[i])
+                                {
+                                    Console.WriteLine("[{0}]", i+1);
+                                }
+                            }
+                            pieceToMove = InputHelper.ReadNumber() - 1;
+
+                            if (movablePieces[pieceToMove])
+                            {
+                                player.MovePiece(pieceToMove, dieRoll);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("None of your pieces are allowed to move. How unfortunate.");
+                    }
+
+                    winner = PlayerHasWon(player);
+
+                    if (winner)
+                    {
+                        break;
+                    } 
+                }
+            }
+        }
+
+        public bool PlayerHasWon(Player player)
+        {
+            if (player.Pieces[0].Progress == 45
+                && player.Pieces[1].Progress == 45
+                && player.Pieces[2].Progress == 45
+                && player.Pieces[3].Progress == 45
+                )
+            {
+                return true;
+            }
+            return false;
         }
 
         public void DisplayRules()

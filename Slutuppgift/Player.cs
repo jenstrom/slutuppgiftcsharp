@@ -18,10 +18,12 @@ namespace Slutuppgift
         public Player(ConsoleColor color, int playerNumber)
         {
             Pieces = new Piece[4] 
-            {   new Piece(playerNumber),
+            {   
                 new Piece(playerNumber),
                 new Piece(playerNumber),
-                new Piece(playerNumber) };
+                new Piece(playerNumber),
+                new Piece(playerNumber)
+            };
             Color = color;
             PlayerNumber = playerNumber;
         }
@@ -56,11 +58,45 @@ namespace Slutuppgift
 
         }
 
-        
-
-        public void MovePiece(int movement)
+        public bool[] GetMovablePieces(int dieRoll)
         {
+            int furthestPiece = 0;
+            bool[] pieceCanMove = new bool[4] {false, false, false, false};
 
+            for (int i = 0; i < pieceCanMove.Length; i++)
+            {
+                if (Pieces[i].Progress > furthestPiece && Pieces[i].Progress < 45)
+                {
+                    furthestPiece = Pieces[i].Progress;
+                }
+            }
+            Console.WriteLine(furthestPiece);
+
+            for (int i = 0; i < pieceCanMove.Length; i++)
+            {
+                if (Pieces[i].InNest && (dieRoll != 1 && dieRoll != 6))
+                {
+                    continue;
+                }
+
+                if (Pieces[i].Progress != furthestPiece && Pieces[i].Progress + dieRoll >= furthestPiece)
+                {
+                    continue;
+                }
+
+
+                pieceCanMove[i] = true;
+            }
+
+            return pieceCanMove;
+
+
+        }
+
+        public void MovePiece(int piece, int dieRoll)
+        {
+            Pieces[piece].InNest = false;
+            Pieces[piece].Progress += dieRoll;
         }
 
     }

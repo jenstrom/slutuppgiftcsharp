@@ -13,7 +13,7 @@ namespace Slutuppgift
         public string[] BoardSpotsLayout { get; private set; }
         public int[] BoardTopLeftCorner { get; set; }
 
-        public Board(int boardTopLeftCornerX = 0, int boardTopLeftCornerY = 0, 
+        public Board(int boardTopLeftCornerX = 50, int boardTopLeftCornerY = 0, 
             ConsoleColor boardBackgroundColor = ConsoleColor.DarkGray,
             ConsoleColor boardSpotsColor = ConsoleColor.White)
         {
@@ -33,6 +33,9 @@ namespace Slutuppgift
                 Console.SetCursorPosition(BoardTopLeftCorner[0], BoardTopLeftCorner[1] + i);
                 Console.WriteLine(BoardSpotsLayout[i]);
             }
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Gray;            
         }
 
         private string[] CreateBoardArray()
