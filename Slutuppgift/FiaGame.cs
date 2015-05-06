@@ -130,6 +130,7 @@ namespace Slutuppgift
                                 }
                             }
                             Board.DrawBoard();
+                            Board.PlacePieces(Players);
                             
                             pieceToMove = InputHelper.ReadNumber() - 1;
 
@@ -140,7 +141,7 @@ namespace Slutuppgift
 
                             if (movablePieces[pieceToMove])
                             {
-                                player.Pieces[pieceToMove].MovePiece(dieRoll);
+                                MovePiece(player.Pieces[pieceToMove], dieRoll);
                                 Shove(player.Pieces[pieceToMove]);
                                 break;
                             }
@@ -159,6 +160,20 @@ namespace Slutuppgift
                         break;
                     } 
                 }
+            }
+        }
+
+        public void MovePiece(Piece piece, int dieRoll)
+        {
+            piece.InNest = false;
+
+            if (piece.Progress + dieRoll > 45)
+            {
+                piece.Progress = 45 - (piece.Progress + dieRoll - 45);
+            }
+            else
+            {
+                piece.Progress += dieRoll;
             }
         }
 
