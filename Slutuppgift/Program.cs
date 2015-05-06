@@ -14,10 +14,6 @@ namespace Slutuppgift
 
             game.StartGame();
 
-            Console.BackgroundColor = ConsoleColor.Green;
-            Console.ForegroundColor = ConsoleColor.Green;
-
-            
             Console.Read();
 
 

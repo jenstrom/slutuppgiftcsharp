@@ -130,7 +130,7 @@ namespace Slutuppgift
                 }
                 if (boardPosition == 10)
                 {
-                    position[0] += 8;
+                    position[0] += 10;
                     position[1] -= 4;
                 }
                 return position;
@@ -153,7 +153,7 @@ namespace Slutuppgift
                 if (boardPosition == 10)
                 {
                     position[0] += 8;
-                    position[1] += 4;
+                    position[1] += 5;
                 }
                 return position;
             }
@@ -174,7 +174,7 @@ namespace Slutuppgift
                 }
                 if (boardPosition == 10)
                 {
-                    position[0] -= 8;
+                    position[0] -= 10;
                     position[1] += 4;
                 }
                 return position;
@@ -197,7 +197,7 @@ namespace Slutuppgift
                 if (boardPosition == 10)
                 {
                     position[0] -= 8;
-                    position[1] -= 4;
+                    position[1] -= 5;
                 }
                 return position;
             }
@@ -210,13 +210,11 @@ namespace Slutuppgift
             if (boardPosition < 300)
             {
                 position[0] += 10;
-                //position[1] -= 4;
                 position[1] += boardPosition - 200 - 4;
                 return position;
             }
             if (boardPosition < 400)
             {
-                //position[0] += 20;
                 position[0] -= (boardPosition - 300) * 2 + 20;
                 position[1] += 1;
                 return position;
@@ -224,7 +222,6 @@ namespace Slutuppgift
             if (boardPosition < 500)
             {
                 position[0] += 6;
-                //position[1] += 6;
                 position[1] -= boardPosition - 400 + 6;
                 return position;
             }
@@ -247,24 +244,5 @@ namespace Slutuppgift
                 ("o   o   o o o   o   o"),
             };
         }
-
-        //for (int i = 0; i < numberOfPlayers; i++)
-        //    {
-        //        if (i % 2 == 0)
-        //        {
-        //            nestLeftCorner[0] = BoardLeftCorner[0];
-        //        }
-
-        //        playerArray[i] = new Player(colorArray[i], nestLeftCorner, 0 + i*18);
-
-        //        if (i % 2 == 0)
-        //        {
-        //            nestLeftCorner[0] += 16;
-        //        }
-        //        else
-        //        {
-        //            nestLeftCorner[1] += 8;
-        //        }
-        //    }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Slutuppgift
@@ -165,15 +166,46 @@ namespace Slutuppgift
 
         public void MovePiece(Piece piece, int dieRoll)
         {
+            Board.DrawBoard();
             piece.InNest = false;
+            int[] lastPosition = new int[2];
+            bool backwards = false;
 
-            if (piece.Progress + dieRoll > 45)
+            for (int i = 0; i < dieRoll; i++)
             {
-                piece.Progress = 45 - (piece.Progress + dieRoll - 45);
-            }
-            else
-            {
-                piece.Progress += dieRoll;
+                if (piece.Progress == 45)
+                {
+                    backwards = true;
+                }
+                if (backwards)
+                {
+                    piece.Progress--;
+                }
+                else
+                {
+                    piece.Progress++;
+                }
+                if (i > 0 && piece.BoardPosition != 1 && !(backwards && piece.Progress == 44))
+                {
+                    if (backwards)
+                    {
+                        lastPosition = Board.BoardPositionToCoords(piece.BoardPosition + 1);
+                    }
+                    else if (piece.BoardPosition == 1)
+                    {
+                        lastPosition = Board.BoardPositionToCoords(40);
+                    }
+                    else
+                    {
+                        lastPosition = Board.BoardPositionToCoords(piece.BoardPosition - 1); 
+                    }
+                    Console.SetCursorPosition(lastPosition[0], lastPosition[1]);
+                    Console.BackgroundColor = Board.BoardBackgroundColor;
+                    Console.ForegroundColor = Board.BoardSpotsColor;
+                    Console.Write("o");
+                }
+                Board.PlacePieces(Players);
+                Thread.Sleep(500);
             }
         }
 
@@ -191,7 +223,9 @@ namespace Slutuppgift
                     {
                         piece.InNest = true;
                         piece.Progress = 0;
+                        Console.ForegroundColor = player.Color;
                         Console.WriteLine("SHOVED");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                     }
                 }
             }
@@ -214,36 +248,5 @@ namespace Slutuppgift
         {
 
         }
-        
-
-        
-
-        public int[] BoardPositionToCoords(int boardPosition)
-        {
-            //int[] boardStartCoords = new int[2] { BoardLeftCorner[0], BoardLeftCorner[1] + 4 };
-            int[] boardCoords = new int[2];
-
-            if (boardPosition < 10)
-            {
-                if (boardPosition < 5)
-                {
-                    boardCoords[0] += boardPosition;
-                }
-
-                if (boardPosition > 5)
-                {
-                    boardCoords[1] += boardPosition - 5;
-                }
-
-                if (boardPosition > 8)
-                {
-                    boardCoords[0] += 1;
-                }
-            }
-
-            return boardCoords;
-        }
-
-        
     }
 }

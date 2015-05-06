@@ -29,36 +29,7 @@ namespace Slutuppgift
             Board = board;
         }
 
-        public void PlacePieces()
-        {
-            Console.ForegroundColor = Color;
-
-            int[] pieceProgress = new int[4] { Pieces[0].Progress, Pieces[1].Progress, Pieces[2].Progress, Pieces[3].Progress };
-
-            int[] inNest = Array.FindAll(pieceProgress, x => x == 0);
-
-            if (inNest.Length > 0)
-            {
-                int[] placement = new int[2] { 0, 0 };
-
-
-                for (int i = 0; i < inNest.Length; i++)
-                {
-                    if (i % 2 == 0)
-                        placement[0] = 0;
-
-                    Console.SetCursorPosition(placement[0], placement[1]);
-                    Console.Write("X");
-
-                    if (i % 2 == 0)
-                        placement[0] += 4;
-                    else
-                        placement[1] += 2;
-                }
-            }
-
-        }
-
+        
         public bool[] GetMovablePieces(int dieRoll)
         {
             bool[] movablePieces = new bool[4] {false, false, false, false};
@@ -106,8 +77,6 @@ namespace Slutuppgift
             }
 
             return movablePieces;
-
-
         }
 
     }
