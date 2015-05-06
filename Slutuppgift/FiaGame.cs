@@ -107,10 +107,6 @@ namespace Slutuppgift
             {
                 foreach(Player player in Players)
                 {
-                    for (int i = 0; i < player.Pieces.Length; i++)
-                    {
-                        Console.WriteLine("Piece {0} progress: {1}, board position: {2}", i + 1, player.Pieces[i].Progress, player.Pieces[i].BoardPosition);
-                    }
                     Console.WriteLine("Player {0} rolls...", player.PlayerNumber);
                     dieRoll = Die.Roll();
                     Console.WriteLine("Player {0} gets a {1}", player.PlayerNumber, dieRoll);
