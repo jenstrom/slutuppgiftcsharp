@@ -60,43 +60,51 @@ namespace Slutuppgift
 
         public bool[] GetMovablePieces(int dieRoll)
         {
-            int furthestPiece = 0;
-            bool[] pieceCanMove = new bool[4] {false, false, false, false};
+            bool[] movablePieces = new bool[4] {false, false, false, false};
+            bool pieceCanMove = false;
 
-            for (int i = 0; i < pieceCanMove.Length; i++)
+            for (int i = 0; i < movablePieces.Length; i++)
             {
-                if (Pieces[i].Progress > furthestPiece && Pieces[i].Progress < 45)
-                {
-                    furthestPiece = Pieces[i].Progress;
-                }
-            }
-            Console.WriteLine(furthestPiece);
+                pieceCanMove = false;
 
-            for (int i = 0; i < pieceCanMove.Length; i++)
-            {
                 if (Pieces[i].InNest && (dieRoll != 1 && dieRoll != 6))
                 {
                     continue;
                 }
 
-                if (Pieces[i].Progress != furthestPiece && Pieces[i].Progress + dieRoll >= furthestPiece)
+                if (Pieces[i].Progress == 45)
                 {
                     continue;
                 }
 
+                for (int j = 0; j < movablePieces.Length; j++ )
+                {
+                    pieceCanMove = true;
 
-                pieceCanMove[i] = true;
+                    if (Pieces[i].InNest)
+                    {
+                        if (Pieces[i].Progress + dieRoll >= Pieces[j].Progress && !Pieces[j].InNest)
+                        {
+                            pieceCanMove = false;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (Pieces[i].Progress < Pieces[j].Progress && (Pieces[i].Progress + dieRoll) >= Pieces[j].Progress)
+                        {
+                            pieceCanMove = false;
+                            break;
+                        }
+                    }
+                }
+
+                movablePieces[i] = pieceCanMove;
             }
 
-            return pieceCanMove;
+            return movablePieces;
 
 
-        }
-
-        public void MovePiece(int piece, int dieRoll)
-        {
-            Pieces[piece].InNest = false;
-            Pieces[piece].Progress += dieRoll;
         }
 
     }

@@ -132,9 +132,14 @@ namespace Slutuppgift
                             }
                             pieceToMove = InputHelper.ReadNumber() - 1;
 
+                            if (pieceToMove < 0 || pieceToMove > 3)
+                            {
+                                break;
+                            }
+
                             if (movablePieces[pieceToMove])
                             {
-                                player.MovePiece(pieceToMove, dieRoll);
+                                player.Pieces[pieceToMove].MovePiece(dieRoll);
                                 break;
                             }
                         }

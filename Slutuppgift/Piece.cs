@@ -36,5 +36,19 @@ namespace Slutuppgift
             InNest = true;
             StartPosition = (Owner - 1) * 10;
         }
+
+        public void MovePiece(int dieRoll)
+        {
+            InNest = false;
+
+            if (Progress + dieRoll > 45)
+            {
+                Progress = 45 - (Progress + dieRoll - 45);
+            }
+            else
+            {
+                Progress += dieRoll;
+            }
+        }
     }
 }

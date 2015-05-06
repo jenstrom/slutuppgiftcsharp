@@ -19,6 +19,10 @@ namespace Slutuppgift
                 Console.WriteLine(error);
                 Console.Write("> ");
                 input = Console.ReadLine();
+
+                if (input.ToLower() == "x")
+                    Environment.Exit(0);
+
                 error = "Invalid input";
             } while (!Int32.TryParse(input, out outputInt));
 
