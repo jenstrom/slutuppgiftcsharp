@@ -25,17 +25,26 @@ namespace Slutuppgift
 
         public void DrawBoard()
         {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Black;
+            for (int i = 0; i < Console.WindowHeight; i++ )
+            {
+                Console.SetCursorPosition(Console.WindowLeft + Console.WindowWidth - 21, Console.WindowTop + i);
+                Console.WriteLine("".PadLeft(22));
+            }
+
             Console.BackgroundColor = BoardBackgroundColor;
             Console.ForegroundColor = BoardSpotsColor;
 
             for (int i = 0; i < BoardSpotsLayout.Length; i++)
             {
-                Console.SetCursorPosition(BoardTopLeftCorner[0], BoardTopLeftCorner[1] + i);
+                Console.SetCursorPosition(Console.WindowLeft + Console.WindowWidth - 21, Console.WindowTop + i + 3);
                 Console.WriteLine(BoardSpotsLayout[i]);
             }
 
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Gray;            
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.SetCursorPosition(Console.WindowLeft, Console.WindowTop + Console.WindowHeight - 1);
         }
 
         private string[] CreateBoardArray()

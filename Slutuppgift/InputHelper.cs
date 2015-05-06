@@ -16,7 +16,10 @@ namespace Slutuppgift
 
             do
             {
-                Console.WriteLine(error);
+                if (!String.IsNullOrEmpty(error))
+                {
+                    Console.WriteLine(error);
+                }
                 Console.Write("> ");
                 input = Console.ReadLine();
 

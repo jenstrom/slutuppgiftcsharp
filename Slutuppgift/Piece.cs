@@ -24,6 +24,11 @@ namespace Slutuppgift
                 {
                     BoardPosition -= 40;
                 }
+
+                if (_progress > 40)
+                {
+                    BoardPosition = 100 * Owner + _progress - 40;
+                }
             }
         }
         public int BoardPosition { get; private set; }

@@ -69,7 +69,6 @@ namespace Slutuppgift
         public void SetupBoard()
         {
             Board = new Board();
-            Board.DrawBoard();
         }
 
         public void SetupPlayers()
@@ -90,7 +89,7 @@ namespace Slutuppgift
 
             for (int i = 0; i < numOfPlayers; i++)
             {
-                Players[i] = new Player(_defaultColors[i], i + 1);
+                Players[i] = new Player(_defaultColors[i], i + 1, Board);
             }
         }
 
@@ -109,7 +108,7 @@ namespace Slutuppgift
                 {
                     for (int i = 0; i < player.Pieces.Length; i++)
                     {
-                        Console.WriteLine("Piece {0} progress: {1}", i + 1, player.Pieces[i].Progress);
+                        Console.WriteLine("Piece {0} progress: {1}, board position: {2}", i + 1, player.Pieces[i].Progress, player.Pieces[i].BoardPosition);
                     }
                     Console.WriteLine("Player {0} rolls...", player.PlayerNumber);
                     dieRoll = Die.Roll();
@@ -130,16 +129,19 @@ namespace Slutuppgift
                                     Console.WriteLine("[{0}]", i+1);
                                 }
                             }
+                            Board.DrawBoard();
+                            
                             pieceToMove = InputHelper.ReadNumber() - 1;
 
                             if (pieceToMove < 0 || pieceToMove > 3)
                             {
-                                break;
+                                continue;
                             }
 
                             if (movablePieces[pieceToMove])
                             {
                                 player.Pieces[pieceToMove].MovePiece(dieRoll);
+                                Shove(player.Pieces[pieceToMove]);
                                 break;
                             }
                         }
@@ -153,8 +155,29 @@ namespace Slutuppgift
 
                     if (winner)
                     {
+                        Console.WriteLine("Player {0} has won!!", player.PlayerNumber);
                         break;
                     } 
+                }
+            }
+        }
+
+        public void Shove (Piece shover)
+        {
+            foreach (Player player in Players)
+            {
+                if (player.PlayerNumber == shover.Owner)
+                {
+                    continue;
+                }
+                foreach (Piece piece in player.Pieces)
+                {
+                    if (shover.BoardPosition == piece.BoardPosition)
+                    {
+                        piece.InNest = true;
+                        piece.Progress = 0;
+                        Console.WriteLine("SHOVED");
+                    }
                 }
             }
         }
@@ -178,25 +201,7 @@ namespace Slutuppgift
         }
         
 
-        private Player[] CreatePlayers(int numberOfPlayers)
-        {
-            var playerArray = new Player[numberOfPlayers];
-
-            var colorArray = new ConsoleColor[4]
-            {
-                ConsoleColor.Red,
-                ConsoleColor.Blue,
-                ConsoleColor.Green,
-                ConsoleColor.Yellow
-            };
-
-            for (int i = 0; i < numberOfPlayers; i++)
-            {
-                playerArray[i] = new Player(colorArray[i], i+1);
-            }
-
-            return playerArray;
-        }
+        
 
         public int[] BoardPositionToCoords(int boardPosition)
         {

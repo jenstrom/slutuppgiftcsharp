@@ -13,9 +13,9 @@ namespace Slutuppgift
         public ConsoleColor Color { get; set; }
         public int PlayerNumber { get; set; }
 
+        public Board Board { get; set; }
 
-
-        public Player(ConsoleColor color, int playerNumber)
+        public Player(ConsoleColor color, int playerNumber, Board board)
         {
             Pieces = new Piece[4] 
             {   
@@ -26,6 +26,7 @@ namespace Slutuppgift
             };
             Color = color;
             PlayerNumber = playerNumber;
+            Board = board;
         }
 
         public void PlacePieces()
@@ -91,7 +92,9 @@ namespace Slutuppgift
                     }
                     else
                     {
-                        if (Pieces[i].Progress < Pieces[j].Progress && (Pieces[i].Progress + dieRoll) >= Pieces[j].Progress)
+                        if (Pieces[i].Progress < Pieces[j].Progress 
+                            && (Pieces[i].Progress + dieRoll) >= Pieces[j].Progress
+                            && Pieces[i].Progress + dieRoll < 45)
                         {
                             pieceCanMove = false;
                             break;
